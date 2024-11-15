@@ -11069,7 +11069,7 @@ body {
   height: auto;
   min-height: 35rem;
   padding: 15rem 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("../assets/img/some-smiling-friends-desktop-wallpapers-ill-even-make-them-v0-o1q36i7148j81.png");
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("../assets/img/newtankinbackground.gif");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -11200,4 +11200,94 @@ body {
 
 .footer {
   padding: 5rem 0;
+}
+
+/** NOTE NEW CSS **/
+
+/* CSS */
+.tankin-button {
+  appearance: none;
+  background-color: #000000;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 50%;
+  will-change: transform;
+}
+
+.tankin-button:disabled {
+  pointer-events: none;
+}
+
+.tankin-button:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+  color: white;
+}
+
+.tankin-button:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.best-friends-section {
+  padding: 60px 0;
+}
+
+.friend-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.friend-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.discord-images img {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.discord-images img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.monitor-breaking-section {
+  padding: 60px 0;
+}
+
+.monitor-text {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.monitor-text:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.monitor-breaking-section img {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.monitor-breaking-section img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
 }
