@@ -17,6 +17,15 @@
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body id="page-top">
+<!-- Floating Music Bar -->
+<div class="floating-music-bar">
+    <button id="play-pause-btn" onclick="togglePlayPause()">
+        <i id="play-icon" class="fas fa-play"></i>
+    </button>
+    <audio id="background-music" src="/assets/musicgleb.mp3" autoplay loop></audio>
+</div>
+
+        
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
@@ -34,12 +43,22 @@
                 </div>
             </div>
         </nav>
+
+        
+
         <!-- Masthead-->
         <header class="masthead">
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
                     <div class="text-center">
-                        <h1 class="mx-auto my-0 text-uppercase">Tankin</h1>
+                        <div class="dancing-text mx-auto my-0 text-uppercase" id="dancing-text">
+                            <span class="letter">T</span>
+                            <span class="letter">A</span>
+                            <span class="letter">N</span>
+                            <span class="letter">K</span>
+                            <span class="letter">I</span>
+                            <span class="letter">N</span>
+                        </div>
                         <h2 class="text-white-50 mx-auto mt-2 mb-5">Manager of HUNNA</h2>
                         <a class="tankin-button" href="#about">Get Started</a>
                     </div>
@@ -240,5 +259,103 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script>
+        const audio = document.getElementById('background-music');
+        const playPauseButton = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const dancingText = document.getElementById('dancing-text');
+
+        // Set up the audio context for beat detection
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+
+        // Function to toggle play/pause button
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        // Prepare frequency data
+        let bufferLength = analyser.frequencyBinCount;
+        let dataArray = new Uint8Array(bufferLength);
+
+        // Array to store initial Y positions of letters
+        let letterYPositions = [];
+        let letterRestPositions = [];
+
+        // Initialize the letters' Y positions when the page loads
+        [...dancingText.children].forEach((letter, index) => {
+            letterYPositions[index] = 0; // Start at the same Y position initially
+            letterRestPositions[index] = 0; // Resting position
+        });
+
+        // Function to animate text based on audio frequency data
+        function danceToTheBeat() {
+            analyser.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                sum += dataArray[i];
+            }
+
+            const averageFrequency = sum / bufferLength;
+
+            // Set jump height based on average frequency
+            const threshold = 5; // Set a minimum value for frequency to start jumping
+            const frequencyScalingFactor = 0.8; // Scaling factor for jump size
+            const maxJumpHeight = 30; // Maximum height for the letters to jump
+
+            [...dancingText.children].forEach((letter, index) => {
+                if (averageFrequency > threshold) {
+                    // Calculate upward movement based on average frequency, mapped to the jump height
+                    let jumpHeight = (averageFrequency - threshold) * frequencyScalingFactor;
+
+                    // Apply randomness for each letter's movement (unique Y transformations for each letter)
+                    let randomOffset = (Math.random() - 0.5) * 20; // Random offset for variability in movement
+                    let totalJump = Math.min(jumpHeight + randomOffset, maxJumpHeight);
+
+                    // Apply the Y transformation (moving only upwards)
+                    let letterPositionY = letterRestPositions[index] + totalJump;
+
+                    // Apply the transform for this letter
+                    letter.style.transform = `translateY(-${letterPositionY}px)`; // Negative value for upward movement
+                } else {
+                    // When below threshold, reset immediately to resting position (simulating gravity)
+                    let letterPositionY = letterRestPositions[index];
+
+                    // Apply the transform to bring the letter back down quickly
+                    letter.style.transform = `translateY(-${letterPositionY}px)`;
+                }
+            });
+
+            // Keep updating the animation frame
+            requestAnimationFrame(danceToTheBeat);
+        }
+
+        // Start dancing the text once the audio is playing
+        audio.onplay = () => {
+            console.log("Audio is playing...");
+            audioContext.resume().then(() => {
+                danceToTheBeat();
+            });
+        };
+
+        // In case audio is already playing on page load
+        if (audio.paused === false) {
+            audioContext.resume().then(() => {
+                danceToTheBeat();
+            });
+        }
+        </script>
     </body>
 </html>
